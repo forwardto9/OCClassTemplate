@@ -96,11 +96,12 @@
 
 
 @interface ClassTemplate < __covariant T: id<ClassTemplateDelegate> > : NSObject
-- (void)doSomething:(T)t;
+@property (nonatomic, strong) T t;
+- (void)doSomething;
 @end
 @implementation ClassTemplate
-- (void)doSomething:(id<ClassTemplateDelegate>)t {
-    [t doSomething];
+- (void)doSomething {
+    [self.t doSomething];
 }
 @end
 
@@ -116,12 +117,14 @@ int main(int argc, const char * argv[]) {
         //        ClassTemplate <Template2Delegate> * c2 = [[ClassTemplate alloc] init];
         //        [c2 doSomething];
         
+        ClassTemplate <Class1T *> *c1 = [[ClassTemplate alloc] init];
+        c1.t = [Class1T new];
+        [c1 doSomething];
         
+        ClassTemplate <Class2T *> *c2 = [[ClassTemplate alloc] init];
+        c2.t = [Class2T new];
+        [c2 doSomething];
         
-        ClassTemplate *c1 = [[ClassTemplate alloc] init];
-        [c1 doSomething:[Class1T new]];
-        ClassTemplate *c2 = [[ClassTemplate alloc] init];
-        [c2 doSomething:[Class2T new]];
     }
     return 0;
 }
